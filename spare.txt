@@ -1,0 +1,330 @@
+// script.js
+
+let currentSearchTerm = '';
+let fullScreenClock = null; 
+
+// Function to fetch time and update clock face
+async function fetchTime(zone) {
+  const options = { timeZone: zone, hour12: true, hour: 'numeric', minute: 'numeric', second: 'numeric' };
+  const localTime = new Date().toLocaleTimeString('en', options);
+  return localTime;
+}
+
+// Function to create a clock face
+async function createClockFace(city, zone) {
+  const time = await fetchTime(zone);
+
+  const clockFace = document.createElement('a');
+  clockFace.href = "#";
+  clockFace.className = "clock-face";
+  clockFace.dataset.city = city;
+  clockFace.dataset.zone = zone;
+
+  const container = document.createElement('div');
+  container.className = "container";
+
+  const cityName = document.createElement('h2');
+  cityName.textContent = city;
+
+  const timeElem = document.createElement('p');
+  timeElem.textContent = time;
+
+  container.appendChild(cityName);
+  container.appendChild(timeElem);
+  clockFace.appendChild(container);
+
+  // Add click event to toggle full screen
+  clockFace.addEventListener('click', toggleFullScreen);
+
+  return clockFace;
+}
+
+// Function to update all clocks
+async function updateWorldClocks() {
+  const clockContainer = document.getElementById("box");
+  const clocks = [];
+
+  for (const { city, zone } of timezones) {
+    const clockHTML = await createClockFace(city, zone);
+    clocks.push(clockHTML);
+  }
+
+  clockContainer.innerHTML = "";
+  clocks.forEach(clock => clockContainer.appendChild(clock));
+
+  // Apply search filter after clocks are updated
+  applySearchFilter(currentSearchTerm); // Maintain search results after updating
+
+  // Reapply full-screen mode if needed
+  if (fullScreenClock) {
+    const clockToMakeFullScreen = document.querySelector(`.clock-face[data-city="${fullScreenClock.dataset.city}"]`);
+    if (clockToMakeFullScreen) {
+      clockToMakeFullScreen.classList.add('full-screen');
+    }
+  }
+
+  // Update local time display
+  const { DateTime } = luxon;
+  const now = DateTime.now();
+  const timely = document.querySelector('.local-time');
+  timely.innerHTML = now.toLocaleString(DateTime.DATETIME_MED_WITH_SECONDS);
+}
+
+// Function to apply search filter
+function applySearchFilter(searchTerm) {
+  const clocks = document.querySelectorAll('.clock-face');
+
+  clocks.forEach(clock => {
+    const city = clock.dataset.city.toLowerCase();
+    if (city.includes(searchTerm)) {
+      clock.style.display = 'flex';
+    } else {
+      clock.style.display = 'none';
+    }
+  });
+}
+
+// Function to toggle full screen for a clock face
+function toggleFullScreen(event) {
+  event.preventDefault();
+  const clockFace = event.currentTarget;
+
+  // Check if the clicked clock face is already in full screen
+  if (fullScreenClock === clockFace) {
+    // Exit full screen
+    clockFace.classList.remove('full-screen');
+    document.querySelector('.full-screen-overlay')?.remove();
+    document.querySelector('.minimize-button')?.remove();
+    document.body.classList.remove('no-interaction');
+    fullScreenClock = null;
+  } else {
+    // Enter full screen
+    if (fullScreenClock) {
+      fullScreenClock.classList.remove('full-screen');
+    }
+    clockFace.classList.add('full-screen');
+
+    // Add overlay to disable interactions
+    const overlay = document.createElement('div');
+    overlay.className = 'full-screen-overlay';
+    document.body.appendChild(overlay);
+
+    // Add minimize button
+    const minimizeButton = document.createElement('button');
+    minimizeButton.className = 'minimize-button';
+    minimizeButton.textContent = '-';
+    minimizeButton.addEventListener('click', minimizeFullScreen);
+    document.body.appendChild(minimizeButton);
+
+    document.body.classList.add('no-interaction'); // Prevent interaction with other elements
+
+    fullScreenClock = clockFace;
+  }
+}
+
+// Function to minimize full screen clock
+function minimizeFullScreen() {
+  if (fullScreenClock) {
+    fullScreenClock.classList.remove('full-screen');
+    document.querySelector('.full-screen-overlay')?.remove();
+    document.querySelector('.minimize-button')?.remove();
+    document.body.classList.remove('no-interaction');
+    fullScreenClock = null;
+  }
+}
+
+// Initialize clocks and set intervals for updates
+updateWorldClocks();
+setInterval(updateWorldClocks, 1000); // Update every second
+
+// Handle search functionality
+document.getElementById('searchButton').addEventListener('click', function() {
+  currentSearchTerm = document.getElementById('searchInput').value.toLowerCase(); // Update global search term
+  applySearchFilter(currentSearchTerm); // Apply filter
+});
+
+
+
+// script.js
+
+let currentSearchTerm = '';
+let fullScreenClock = null; 
+
+// Function to fetch time and update clock face
+async function fetchTime(zone) {
+  const options = { timeZone: zone, hour12: true, hour: 'numeric', minute: 'numeric', second: 'numeric' };
+  const localTime = new Date().toLocaleTimeString('en', options);
+  return localTime;
+}
+
+// Function to create a clock face
+async function createClockFace(city, zone) {
+  const time = await fetchTime(zone);
+
+  const clockFace = document.createElement('a');
+  clockFace.href = "#";
+  clockFace.className = "clock-face";
+  clockFace.dataset.city = city;
+  clockFace.dataset.zone = zone;
+
+  const container = document.createElement('div');
+  container.className = "container";
+
+  const cityName = document.createElement('h2');
+  cityName.textContent = city;
+
+  const timeElem = document.createElement('p');
+  timeElem.textContent = time;
+
+  container.appendChild(cityName);
+  container.appendChild(timeElem);
+  clockFace.appendChild(container);
+
+  // Add click event to toggle full screen
+  clockFace.addEventListener('click', toggleFullScreen);
+
+  return clockFace;
+}
+
+// Function to update all clocks
+async function updateWorldClocks() {
+  const clockContainer = document.getElementById("box");
+  const clocks = [];
+
+  for (const { city, zone } of timezones) {
+    const clockHTML = await createClockFace(city, zone);
+    clocks.push(clockHTML);
+  }
+
+  clockContainer.innerHTML = "";
+  clocks.forEach(clock => clockContainer.appendChild(clock));
+
+  // Apply search filter after clocks are updated
+  applySearchFilter(currentSearchTerm); // Maintain search results after updating
+
+  // Reapply full-screen mode if needed
+  if (fullScreenClock) {
+    const clockToMakeFullScreen = document.querySelector(`.clock-face[data-city="${fullScreenClock.dataset.city}"]`);
+    if (clockToMakeFullScreen) {
+      clockToMakeFullScreen.classList.add('full-screen');
+    }
+  }
+
+  // Update local time display
+  const { DateTime } = luxon;
+  const now = DateTime.now();
+  const timely = document.querySelector('.local-time');
+  timely.innerHTML = now.toLocaleString(DateTime.DATETIME_MED_WITH_SECONDS);
+}
+
+// Function to apply search filter
+function applySearchFilter(searchTerm) {
+  const clocks = document.querySelectorAll('.clock-face');
+
+  clocks.forEach(clock => {
+    const city = clock.dataset.city.toLowerCase();
+    if (city.includes(searchTerm)) {
+      clock.style.display = 'flex';
+    } else {
+      clock.style.display = 'none';
+    }
+  });
+}
+
+// Function to toggle full screen for a clock face
+function toggleFullScreen(event) {
+  event.preventDefault();
+  const clockFace = event.currentTarget;
+
+  // Check if the clicked clock face is already in full screen
+  if (fullScreenClock === clockFace) {
+    // Exit full screen
+    clockFace.classList.remove('full-screen');
+    document.querySelector('.full-screen-overlay')?.remove();
+    document.querySelector('.minimize-button')?.remove();
+    document.body.classList.remove('no-interaction');
+    fullScreenClock = null;
+  } else {
+    // Enter full screen
+    if (fullScreenClock) {
+      fullScreenClock.classList.remove('full-screen');
+    }
+    clockFace.classList.add('full-screen');
+
+    // Add overlay to disable interactions
+    const overlay = document.createElement('div');
+    overlay.className = 'full-screen-overlay';
+    document.body.appendChild(overlay);
+
+    // Add minimize button
+    const minimizeButton = document.createElement('button');
+    minimizeButton.className = 'minimize-button';
+    minimizeButton.textContent = '-';
+    minimizeButton.addEventListener('click', minimizeFullScreen);
+    document.body.appendChild(minimizeButton);
+
+    document.body.classList.add('no-interaction'); // Prevent interaction with other elements
+
+    fullScreenClock = clockFace;
+  }
+}
+
+// Function to minimize full screen clock
+function minimizeFullScreen() {
+  if (fullScreenClock) {
+    fullScreenClock.classList.remove('full-screen');
+    document.querySelector('.full-screen-overlay')?.remove();
+    document.querySelector('.minimize-button')?.remove();
+    document.body.classList.remove('no-interaction');
+    fullScreenClock = null;
+  }
+}
+
+// Initialize clocks and set intervals for updates
+updateWorldClocks();
+setInterval(updateWorldClocks, 1000); // Update every second
+
+// Handle search functionality
+document.getElementById('searchButton').addEventListener('click', function() {
+  currentSearchTerm = document.getElementById('searchInput').value.toLowerCase(); // Update global search term
+  applySearchFilter(currentSearchTerm); // Apply filter
+});
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Device time source -->
+  <script src="https://cdn.jsdelivr.net/npm/luxon@2.1.1/build/global/luxon.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <title>World Clock</title>
+</head>
+<body>
+    <header></header>
+    <main> 
+        <div class="wrapper">
+            <div class="local-time"></div>
+                <div id="searchBox">
+                    <input type="text" id="searchInput" placeholder="Search for a clock">
+                    <button id="searchButton">Enter</button>
+                </div>
+            <div id="box"></div>
+        </div>
+        
+    </main> 
+    <footer>
+        <div class="inst">
+            <!-- <div id="slide-icon">
+                <img src="icons/slide-icon.5c09e7ad..gif" alt="slide icon">
+            </div> -->
+        </div>
+    </footer>
+    
+    <script src="script.js"></script>
+    <script src="function.js"></script>
+</body>
+</html>

@@ -1,0 +1,299 @@
+/* Basic Reset */
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow-x: hidden; 
+  overflow-y: hidden;
+}
+
+/* Body Style */
+body {
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(0, 0, 0);
+  font-family: Arial, sans-serif;
+  font-size: x-large;
+  text-wrap: nowrap;
+}
+
+/* Main Section Style */
+main {
+  min-height: 255px;
+  min-width: 385px;
+  display: flex;
+  flex-direction: column; 
+  align-self: center;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 2;
+  backdrop-filter: blur(150px);
+
+}
+
+/* Wrapper Style */
+.wrapper {
+  display: flex;
+  flex-direction: column; 
+  align-self: center;
+  margin-top: 10vh;
+  width: 80vw;
+  height: 80vh;
+  box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.5); /* White shadow */
+  border: 2px solid rgba(255, 255, 255, 0.302);
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.2);
+  overflow: hidden; 
+}
+
+/* Local Time Style */
+.local-time {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.208);
+  color: aliceblue;
+  margin: 10px;
+}
+
+/* Search Box Style */
+#searchBox {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.503);
+  margin: 10px;
+}
+
+::placeholder {
+  color: #643b00;
+}
+
+#searchInput {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 20px;
+  font-size: large;
+  min-width: 150px;
+}
+
+#searchButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  background-color: #643b00;
+  color: rgb(255, 255, 255);
+  font-size: large;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+#searchButton:hover {
+  background-color: rgb(58, 39, 15);
+}
+
+/* Box Style */
+#box {
+  display: flex;
+  padding: 10px;
+  margin: 10px;
+  border: 2px solid #ffffffd9;
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.503);
+  height: calc(100% - 50px); 
+  overflow-y: auto; 
+  overflow-x: hidden;
+  text-align: left;
+  color: aliceblue;
+  gap: 1em;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  flex-wrap: wrap;
+}
+
+/* Container Style */
+.container {
+  display: flex;
+  align-items: center;
+  border-radius: 20px;
+  padding: 0 1em;
+  color: white;
+  background-color: rgba(100, 58, 0, 0.671);
+  text-shadow: 1px 1px 2px black;
+  scroll-snap-align: start;
+  gap: 1em;
+}
+
+/* Style for clickable clock faces */
+.clock-face {
+  border-radius: 20px;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none; 
+  cursor: pointer; 
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+/* Show time on hover */
+.clock-face:hover .container p {
+  display: block;
+}
+
+.clock-face .clock-face:hover {
+  transition: all 10s ease-in-out;
+
+}
+
+/* Full-screen clock face */
+.clock-face.full-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(0, 0, 0);
+  z-index: 1; 
+  /* pointer-events: none;  */
+}
+
+/* Full-screen clock face styling */
+.full-screen .container {
+  flex-direction: column; 
+  text-align: center;
+  background-color: transparent; 
+  color: aliceblue;
+  font-size: 200%;
+}
+
+.clock-face.full-screen .container p {
+  display: block; 
+}
+
+/* Overlay to disable interactions */
+.full-screen-overlay {
+  /* position: fixed; */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* z-index: 2; */
+  display: none; 
+  /* pointer-events: none; */
+  /* position: absolute; */
+  backdrop-filter: blur(150px);
+}
+
+.clock-face.full-screen {
+  pointer-events: none;
+}
+
+.clock-face .container p {
+  display: none;
+}
+
+.clock-face:hover .container {
+  background-color: rgba(58, 39, 15, 0.800);
+}
+
+.inst {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+#slide-icon {
+  margin: 10px;
+  padding-right: 30px;
+}
+
+
+.clock-face.full-screen {
+  transition: all 1s ease-in-out;
+}
+
+
+/* Style for disabling interactions */
+.no-interaction {
+  pointer-events: none; 
+}
+
+
+/* Hide scrollbar for all browsers */
+#box::-webkit-scrollbar {
+  width: 0;
+}
+
+#box {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+#blob{
+  background-color: white;
+  height: 500px;
+  aspect-ratio: 1;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: linear-gradient(to right, aquamarine,mediumpurple);
+  backdrop-filter: blur(20px);
+  animation: rotate 20s infinite;
+  filter: blur(200px);
+  z-index: 1;
+}
+
+@keyframes rotate {
+  from{
+      rotate: 0deg;
+  }
+  50%{
+      scale: 1 1.3;
+  }
+  to{
+      rotate: 360deg;
+  }
+}
+
+@media(max-width: 768px) {
+  #box {
+    flex-wrap: wrap;
+  }
+}
+
+@media(max-width: 450px) {
+  body {
+    font-size: large;
+  }
+
+  .wrapper {
+    min-width: 250px;
+  }
+
+  .clock-face {
+    min-width: 195px;
+  }
+
+  #slide-icon {
+    scale: 0.8;
+    padding: 0;
+  }
+
+  #searchInput {
+    font-size: medium;
+    min-width: 100px;
+  }
+
+  #searchButton {
+    font-size: medium;
+  }
+}

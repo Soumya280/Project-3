@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Device time source -->
+  <script src="https://cdn.jsdelivr.net/npm/luxon@2.1.1/build/global/luxon.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <title>World Clock</title>
+</head>
+<body>
+    <div id="blob"></div>
+    <main>
+        <div class="wrapper">
+            <div class="local-time"></div>
+            <div id="searchBox">
+                <input type="text" id="searchInput" placeholder="Search for a clock">
+                <button id="searchButton">Enter</button>
+            </div>
+            <div id="box"></div>
+        </div>
+    </main>
+    <!-- Static overlay-->
+    <div class="full-screen-overlay">
+        <div id="blob"></div>
+    </div>
+    
+
+    <script src="script.js"></script>
+    <script src="function.js"></script>
+</body>
+</html>
